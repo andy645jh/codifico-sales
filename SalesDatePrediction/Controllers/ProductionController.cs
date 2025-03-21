@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesDatePredictionApp.Data;
 using SalesDatePredictionApp.Models.Production;
+using SalesDatePredictionApp.Services;
 
 namespace SalesDatePredictionApp.Controllers
 {
@@ -10,22 +11,18 @@ namespace SalesDatePredictionApp.Controllers
     [ApiController]
     public class ProductionController : ControllerBase
     {
-        private readonly StoreSampleDbContext _storeSampleDb;
+        private readonly IProductService _productService;
 
-        public ProductionController(StoreSampleDbContext storeSampleDb)
+        public ProductionController(IProductService productService)
         {
-            _storeSampleDb = storeSampleDb;
+            _productService = productService;
         }    
 
         [HttpGet("products")]
         public async Task<ActionResult<List<Product>>> GetAllProducts()
         {
-            if (_storeSampleDb.Product is null)
-            {
-                return NotFound();
-            }
-
-            return await _storeSampleDb.Set<Product>().ToListAsync();
+            var products = await _productService.GetProductsAsync();
+            return Ok(products);
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿namespace SalesDatePredictionApp.Models.Sales
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SalesDatePredictionApp.Models.Sales
 {
     public class ProductOrder
     {
+        [Required]
         public int  EmpId { get; set; }
         public int  ShipperId { get; set; }
         public string?  ShipName { get; set; }
