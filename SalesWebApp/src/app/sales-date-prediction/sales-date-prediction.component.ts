@@ -53,8 +53,6 @@ export class SalesDatePredictionComponent implements OnInit {
                     this.setTableData(response.data);
                 });
             });
-
-        this.openDialog({custId: 5, customerName: "Custom Name"});
     }
 
     setTableData(data: SalesDatePredictionMdl[]) {
