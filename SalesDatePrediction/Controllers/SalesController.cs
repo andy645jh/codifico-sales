@@ -42,6 +42,13 @@ namespace SalesDatePredictionApp.Controllers
             return Ok(salesPredictions);           
         }
 
+        [HttpGet("sales-date-prediction/{word}")]
+        public async Task<ActionResult<List<SalesDatePrediction>>> GetSalesDatePrediction(string word)
+        {
+            var salesPredictions = await _customerOrderService.GetSalesDatePredictionsAsync(word);
+            return Ok(salesPredictions);
+        }
+
         [HttpPost("add-new-order")]
         public async Task<ActionResult<ProductOrder>> AddNewOrder([FromBody] ProductOrder productOrder)
         {
