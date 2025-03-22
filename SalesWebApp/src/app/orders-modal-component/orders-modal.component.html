@@ -1,9 +1,65 @@
-<div>
-    <div>
-        <h3>Customer - Orders {{data}}</h3>
+<div class="order-modal-container">
+    <div class="order-modal-title">
+        <span>{{data.customerName}} -Orders</span>
     </div>
-    <div>Table and Paginator</div>
     <div>
-        Close Btn
+        <div class="mat-elevation-z8">
+            <table mat-table matSort [dataSource]="orders">
+
+                <!-- orderId Column -->
+                <ng-container matColumnDef="orderId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by orderId">
+                        Order Id </th>
+                    <td mat-cell *matCellDef="let element"> {{element.orderId}} </td>
+                </ng-container>
+
+                <!-- requiredDate Column -->
+                <ng-container matColumnDef="requiredDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by requiredDate">
+                        Required Date</th>
+                    <td mat-cell *matCellDef="let element"> {{element.requiredDate }} </td>
+                </ng-container>
+
+                <!-- shippedDate Column -->
+                <ng-container matColumnDef="shippedDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by shippedDate">
+                        Shipped Date</th>
+                    <td mat-cell *matCellDef="let element"> {{element.shippedDate }} </td>
+                </ng-container>
+
+                <!-- shipName Column -->
+                <ng-container matColumnDef="shipName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by shipName">
+                        Ship Name</th>
+                    <td mat-cell *matCellDef="let element"> {{element.shipName }} </td>
+                </ng-container>
+
+                <!-- shipAddress Column -->
+                <ng-container matColumnDef="shipAddress">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by shipAddress">
+                        Ship Address</th>
+                    <td mat-cell *matCellDef="let element"> {{element.shipAddress }} </td>
+                </ng-container>
+
+                <!-- shipCity Column -->
+                <ng-container matColumnDef="shipCity">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by shipCity">
+                        Ship City</th>
+                    <td mat-cell *matCellDef="let element"> {{element.shipCity }} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[10, 20, 30]" aria-label="Select page of periodic elements">
+            </mat-paginator>
+
+            <div class="container-btn-close-modal">
+                <button (click)="onCloseClick()" class="btn-close-modal remove-btn-style"><span>CLOSE</span></button>
+            </div>
+        </div>
+
     </div>
+
 </div>

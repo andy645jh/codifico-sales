@@ -1,0 +1,29 @@
+.order-modal-container {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.order-modal-title {
+  background-color: #b52c2d;
+  color: white;
+  padding: 12px 10px;
+}
+
+.remove-btn-style {
+  background-color: white;
+  border: none;
+}
+
+.container-btn-close-modal {
+  display: flex;
+  justify-content: end;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+}
+
+.btn-close-modal {
+  color: #b52c2d;
+  font-weight: bold;
+}

@@ -1,26 +1,28 @@
-import { Component, model, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SalesDatePredictionService } from '../services/sales-date-prediction.service';
 import { CommonModule } from '@angular/common';
-import { MatPaginator,MatPaginatorModule, MatPaginatorIntl, MatPaginatorSelectConfig } from '@angular/material/paginator';
-import { MatTableModule, MatTableDataSource  } from '@angular/material/table';
-import { SalesDatePrediction } from '../models/response-mdl';
-import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule, MatPaginatorIntl, MatPaginatorSelectConfig } from '@angular/material/paginator';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { SalesDatePredictionMdl } from '../models/sales-date-prediction-mdl';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { debounceTime, Subject, Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { OrdersModalComponent } from '../orders-modal-component/orders-modal.component';
+import { ROWS_PER_PAGE } from '../constants/constants';
+import { OrderDialogDataMdl } from '../models/order-dialog-data-mdl';
 
 @Component({
     selector: 'app-sales-date-prediction',
     standalone: true,
-    imports: [MatDialogModule, CommonModule, MatPaginatorModule, MatTableModule,MatSortModule,MatIconModule ],
+    imports: [MatDialogModule, CommonModule, MatPaginatorModule, MatTableModule, MatSortModule, MatIconModule],
     templateUrl: './sales-date-prediction.component.html',
     styleUrl: './sales-date-prediction.component.css'
 })
 
 export class SalesDatePredictionComponent implements OnInit {
 
-    dataSource: MatTableDataSource<SalesDatePrediction>;
+    dataSource: MatTableDataSource<SalesDatePredictionMdl>;
     displayedColumns: string[] = ['customerName', 'lastOrderDate', 'nextPredictedOrder', 'option1', 'option2'];
     private readonly customPaginatorIntl = new MatPaginatorIntl();
     private subscription: Subscription;
@@ -31,36 +33,39 @@ export class SalesDatePredictionComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
 
     constructor(public dialog: MatDialog, private readonly salesService: SalesDatePredictionService, private paginatorInt: MatPaginatorIntl) {
-        paginatorInt.itemsPerPageLabel = "Rows per page:";
-     }
+        paginatorInt.itemsPerPageLabel = ROWS_PER_PAGE;
+    }
 
-    openDialog(custId:number) {
-        this.dialog.open(OrdersModalComponent, { width: '250px', data: custId });
+    openDialog(dialogData: OrderDialogDataMdl) {
+        this.dialog.open(OrdersModalComponent, { data: dialogData });
     }
 
     ngOnInit(): void {
         this.salesService.getSaleDatePredictions().subscribe(response => {
-            this.dataSource = new MatTableDataSource(response.data);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-
-            this.customPaginatorIntl.itemsPerPageLabel = 'Rows per page:';
+            this.setTableData(response.data);
+            this.customPaginatorIntl.itemsPerPageLabel = ROWS_PER_PAGE;
         });
 
         this.subscription = this.modelChanged
             .pipe(debounceTime(this.debounceTime),).subscribe((value) => {
 
                 this.salesService.getSaleDatePredictionsByWord(value).subscribe(response => {
-                    this.dataSource = new MatTableDataSource(response.data);
-                    this.dataSource.paginator = this.paginator;
-                    this.dataSource.sort = this.sort;
+                    this.setTableData(response.data);
                 });
             });
+
+        this.openDialog({custId: 5, customerName: "Custom Name"});
     }
 
-    onClickViewOrders(custId: number) {
+    setTableData(data: SalesDatePredictionMdl[]) {
+        this.dataSource = new MatTableDataSource(data);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+    }
+
+    onClickViewOrders(custId: number, customerName: string) {
         console.log("View Order: " + custId);
-        this.openDialog(custId);
+        this.openDialog({ custId: custId, customerName: customerName });
     }
 
     onClickNewOrder(custId: number) {

@@ -28,6 +28,13 @@ namespace SalesDatePredictionApp.Controllers
             return Ok(clientOrders);            
         }
 
+        [HttpGet("clientorders/{customerId}")]
+        public async Task<ActionResult<List<ClientOrder>>> GetClientOrders(int customerId)
+        {
+            var clientOrders = await _clientOrderService.GetClientOrdersAsync(customerId);
+            return Ok(clientOrders);
+        }
+
         [HttpGet("shippers")]
         public async Task<ActionResult<List<Shipper>>> GetShippers()
         {

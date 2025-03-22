@@ -33,5 +33,27 @@ namespace SalesDatePredictionApp.Services
             }
             return response;
         }
+
+        public async Task<ServiceResponse<List<ClientOrder>>> GetClientOrdersAsync(int customerId)
+        {
+            ServiceResponse<List<ClientOrder>> response = new();
+
+            try
+            {
+                var clientOrdersList = await _clientOrderRepository.GetClientOrders();
+                var filteredList = clientOrdersList.Where(x => x.CustId == customerId);
+                response.Success = true;
+                response.Message = "ok";
+                response.Data = filteredList.ToList();
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "Error";
+                response.Data = null;
+                response.ErrorMessages = new List<string> { Convert.ToString(ex.Message) };
+            }
+            return response;
+        }
     }
 }

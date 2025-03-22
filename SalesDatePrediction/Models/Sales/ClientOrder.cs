@@ -2,6 +2,7 @@
 {
     public class ClientOrder
     {
+        public int CustId { get; set; }
         public int OrderId { get; set; }
         public DateTime RequiredDate { get; set; }
         public DateTime? ShippedDate { get; set; }

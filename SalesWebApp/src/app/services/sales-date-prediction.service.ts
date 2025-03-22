@@ -1,18 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ResponseMdl,SalesDatePrediction } from '../models/response-mdl';
+import { ResponseMdl } from '../models/response-mdl';
+import { SalesDatePredictionMdl } from '../models/sales-date-prediction-mdl';
+import { BASE_URL, SALES_DATE_PREDICTION } from '../constants/constants';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SalesDatePredictionService {
-    constructor(private http: HttpClient) { }
+    constructor(private readonly http: HttpClient) { }
 
     getSaleDatePredictions() {
-        return this.http.get<ResponseMdl<SalesDatePrediction[]>>('https://localhost:7283/api/sales/sales-date-prediction');
+        return this.http.get<ResponseMdl<SalesDatePredictionMdl[]>>(BASE_URL + SALES_DATE_PREDICTION);
     }
 
     getSaleDatePredictionsByWord(word:string) {
-        return this.http.get<ResponseMdl<SalesDatePrediction[]>>('https://localhost:7283/api/sales/sales-date-prediction/'+word);
+        return this.http.get<ResponseMdl<SalesDatePredictionMdl[]>>(BASE_URL + SALES_DATE_PREDICTION + '/' + word);
     }
 }

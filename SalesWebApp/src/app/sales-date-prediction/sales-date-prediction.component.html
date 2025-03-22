@@ -43,7 +43,7 @@
                 <ng-container matColumnDef="option1">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let element">
-                        <button class="table-view-order remove-btn-style" (click)="onClickViewOrders(element.custId)">VIEW ORDERS</button>
+                        <button class="table-view-order remove-btn-style" (click)="onClickViewOrders(element.custId, element.customerName)">VIEW ORDERS</button>
                     </td>
                 </ng-container>
 

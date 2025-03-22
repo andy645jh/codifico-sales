@@ -5,10 +5,3 @@ export class ResponseMdl<T> {
     error: string;
     errorMessages: string[];
 }
-
-export class SalesDatePrediction {
-    custId: number;
-    customerName: string;
-    lastOrderDate: Date;
-    nextPredictedOrder: Date;
-}
